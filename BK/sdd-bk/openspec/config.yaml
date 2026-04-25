@@ -1,0 +1,57 @@
+schema: spec-driven
+
+context: |
+  Proyecto: Space Invaders en Python.
+  Stack tecnico:
+  - Python 3.10+
+  - pygame >= 2.5
+  - pytest >= 8
+  - SQLite (persistencia local)
+
+  Estructura y arquitectura:
+  - Patron MVC adaptado a videojuegos.
+  - Loop obligatorio: process input -> update(delta_time) -> render.
+  - Gestion de escenas centralizada en SceneManager.
+  - Escenas minimas: MainMenuScene, GameScene, PauseScene, GameOverScene, HighScoresScene, SettingsScene.
+  - Separacion de responsabilidades:
+    - models: estado y reglas de entidades
+    - views: renderizado puro
+    - controllers: input y coordinacion
+    - services: logica de aplicacion (colisiones, score, nivel/oleadas)
+    - repositories: acceso a SQLite
+
+  Restricciones importantes:
+  - No logica de persistencia fuera de repositories/services.
+  - Colisiones globales solo en CollisionService.
+  - Eventos internos via EventBus (enemy_destroyed, player_hit, score_changed, level_completed, game_over).
+  - Mantener independencia del FPS usando delta_time.
+
+  Convenciones de codigo:
+  - PEP 8, SOLID, type hints en APIs publicas.
+  - Nombres: PascalCase (clases), snake_case (funciones/variables), UPPER_SNAKE_CASE (constantes).
+  - Cambios pequenos, modulares y testeables.
+
+  Ejecucion y testing:
+  - Entry point: python -m space_invaders
+  - Tests: pytest
+  - Config de tests: pytest.ini (pythonpath=src, testpaths=src/space_invaders/tests)
+
+rules:
+  proposal:
+    - Citar impacto en ARCHITECTURE.md, DATABASE.md, CODING.md, TEST.md y GAME_DESIGN.md.
+    - Incluir secciones: Objetivo, Alcance, No-objetivos, Impacto arquitectonico, Riesgos.
+    - Si una decision rompe una regla de los documentos base, marcarla como BLOQUEANTE y pedir aprobacion explicita.
+    - Favorecer soluciones de bajo acoplamiento y alta testabilidad.
+
+  tasks:
+    - Definir tareas pequenas y verificables, idealmente en pasos de 1-2 horas.
+    - Incluir siempre tareas de testing cuando haya cambios funcionales.
+    - Separar tareas por capa (scene/controller/service/repository/view) para preservar arquitectura.
+    - Evitar tareas que mezclen render, dominio y persistencia en un mismo cambio.
+
+  spec:
+    - Definir criterios de aceptacion observables y testeables.
+    - Mantener compatibilidad con el contrato de escenas: enter, exit, handle_events, update, render.
+    - Respetar mapeo de input canonico: move_left, move_right, shoot, pause, confirm, back.
+    - Para persistencia, exigir uso de repositories sobre SQLite y migracion versionada.
+    - Para gameplay, explicitar estados de GameScene: READY, PLAYING, PLAYER_DIED, LEVEL_CLEARED, GAME_OVER.
