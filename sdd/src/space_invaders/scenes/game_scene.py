@@ -276,6 +276,7 @@ class GameScene(Scene):
 
         self._game_view.render(
             surface=surface,
+            asset_manager=asset_manager,
             player=self.player,
             enemies=self.enemies,
             player_bullets=self.player_bullets,

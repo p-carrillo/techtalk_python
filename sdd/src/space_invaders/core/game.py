@@ -43,7 +43,7 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.data_root = Path(".game_data")
-        self.assets_root = Path("assets")
+        self.assets_root = Path(__file__).resolve().parent.parent / "assets"
 
         database = Database(self.data_root / "space_invaders.db")
         database.migrate()
